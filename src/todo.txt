@@ -1,0 +1,18 @@
+[] Criar Telas (exemplo) com conceitos de animações compartilhadas usando nativeDriver
+[] Autenticação usando firebase e REDUX
+[] Configuração da Navegação entre rotas
+[] Criar Roles para Usuarios
+[] Adicionar regras ao banco de dados o firebase e criar regras de redirecionamento para erros de autorização
+[] Rotas privadas
+[] Persistencia de dados Offline
+[] Fila Offline
+[] Sincronização de dados em fila com regras de autenticação
+
+se nao renderizar componentes para navegação ( topbar, header... ) usar o SafeAreaView do react-native-firebase
+
+IOS -----
+
+[] Mudar Orientação para portrait only
+[] Icons e splash Screen
+[] firebase
+[] Demais Testes

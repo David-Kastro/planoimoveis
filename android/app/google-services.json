@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "87601122667",
+    "firebase_url": "https://plano-imoveis.firebaseio.com",
+    "project_id": "plano-imoveis",
+    "storage_bucket": "plano-imoveis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87601122667:android:d6f145f40d116998",
+        "android_client_info": {
+          "package_name": "com.planoimoveis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87601122667-7cmjahv3c3do3orgij7l7fm0iiiijuk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7hHoxorAQ8PNzWG1Klh0sM7haMQYEtKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87601122667-7cmjahv3c3do3orgij7l7fm0iiiijuk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
