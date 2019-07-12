@@ -35,77 +35,84 @@ class SignIn extends Component {
   state = {
     email           : "",
     password        : "",
-    // LogoOpacity     : new Animated.Value(1),
-    // LogoScale       : new Animated.Value(1),
+    SignUpDisabled  : new Animated.Value(0),
+    LogoOpacity     : new Animated.Value(1),
+    LogoScale       : new Animated.Value(1),
     // FormTranslateY  : new Animated.Value(Dimensions.get('window').height * 0.50)
   }
 
-  // componentDidMount() {
+  componentDidMount() {
 
-  //   this.keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     this._keyboardDidShow,
-  //   );
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
 
-  //   this.keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     this._keyboardDidHide,
-  //   );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide,
+    );
 
-  // }
+  }
 
-  // componentWillUnmount() {
-  //   this.keyboardDidShowListener.remove();
-  //   this.keyboardDidHideListener.remove();
-  // }
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
 
-  // _keyboardDidShow = () => {
+  _keyboardDidShow = () => {
 
-  //   Animated.timing(this.state.LogoOpacity, {
-  //     toValue  : 0,
-  //     duration : 100,
-  //     useNativeDriver: true
-  //   }).start();
+    Animated.timing(this.state.LogoOpacity, {
+      toValue  : 0,
+      duration : 300,
+      useNativeDriver: true
+    }).start();
 
-  //   Animated.timing(this.state.LogoScale, {
-  //     toValue  : 0,
-  //     duration : 160,
-  //     asing    : Easing.ease,
-  //     useNativeDriver: true
-  //   }).start();
+    Animated.timing(this.state.LogoScale, {
+      toValue  : 0.01,
+      duration : 160,
+      asing    : Easing.ease,
+      useNativeDriver: true
+    }).start();
 
-  //   Animated.timing(this.state.FormTranslateY, {
-  //     toValue  : Dimensions.get('window').height * 0.10,
-  //     duration : 160,
-  //     asing    : Easing.ease,
-  //     useNativeDriver: true
-  //   }).start();
+    Animated.timing(this.state.SignUpDisabled, {
+      toValue  : 1,
+      delay    : 160,
+      useNativeDriver: true
+    }).start();
 
-  // }
+    // Animated.timing(this.state.FormTranslateY, {
+    //   toValue  : Dimensions.get('window').height * 0.10,
+    //   duration : 160,
+    //   asing    : Easing.ease,
+    //   useNativeDriver: true
+    // }).start();
 
-  // _keyboardDidHide = () => {
+  }
 
-  //   Animated.timing(this.state.LogoOpacity, {
-  //     toValue  : 1,
-  //     duration : 400,
-  //     useNativeDriver: true
-  //   }).start();
+  _keyboardDidHide = () => {
 
-  //   Animated.timing(this.state.LogoScale, {
-  //     toValue  : 1,
-  //     duration : 160,
-  //     asing    : Easing.ease,
-  //     useNativeDriver: true
-  //   }).start();
+    Animated.timing(this.state.LogoOpacity, {
+      toValue  : 1,
+      duration : 100,
+      useNativeDriver: true
+    }).start();
 
-  //   Animated.timing(this.state.FormTranslateY, {
-  //     toValue  : Dimensions.get('window').height * 0.50,
-  //     duration : 160,
-  //     asing    : Easing.ease,
-  //     useNativeDriver: true
-  //   }).start();
+    Animated.timing(this.state.LogoScale, {
+      toValue  : 1,
+      duration : 160,
+      asing    : Easing.ease,
+      useNativeDriver: true
+    }).start();
 
-  // }
+    // Animated.timing(this.state.FormTranslateY, {
+    //   toValue  : Dimensions.get('window').height * 0.50,
+    //   duration : 160,
+    //   asing    : Easing.ease,
+    //   useNativeDriver: true
+    // }).start();
+
+  }
 
   fazerLogin = async () => {
 
@@ -133,7 +140,7 @@ class SignIn extends Component {
 
       <Container>
 
-        <Logo resizeMode="contain" />
+        <Logo resizeMode="contain" style={{transform: [{scale: this.state.LogoScale}], opacity: this.state.LogoOpacity}} />
 
         <Form>
 
@@ -179,7 +186,7 @@ class SignIn extends Component {
           </Form.Content>
 
           <SignUpCard>
-            <SignUpButton onPress={() => console.log('Pressed')}></SignUpButton>
+            <SignUpButton onPress={() => console.log('Pressed')} disabled={this.state.SignUpDisabled}></SignUpButton>
           </SignUpCard>
           
         </Form>
