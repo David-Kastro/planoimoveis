@@ -39,7 +39,7 @@ export const Logo = styled(Animated.Image).attrs({
 export const Form = styled(Card).attrs({
     elevation       : 5,
 })`
-    width           : 320px;
+    width           : ${Dimensions.get('window').width * 0.9}px;
     height          : 350px;
     transform       : translateY(${Dimensions.get('window').height * 0.3}px);
 `;
