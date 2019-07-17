@@ -41,7 +41,7 @@ export const Form = styled(Card).attrs({
 })`
     width           : 320px;
     height          : 350px;
-    margin-vertical : ${Dimensions.get('window').height * 0.3}px;
+    transform       : translateY(${Dimensions.get('window').height * 0.3}px);
 `;
 
 export const Input = styled(TextInput).attrs({
