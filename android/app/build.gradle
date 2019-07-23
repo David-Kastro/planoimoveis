@@ -145,6 +145,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation "com.google.firebase:firebase-auth:17.0.0"
 
+    //React-native-maps dependencies
+    implementation project(':react-native-maps')
+
     implementation project(':react-native-gesture-handler')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
