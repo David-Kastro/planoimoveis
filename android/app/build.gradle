@@ -145,6 +145,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation "com.google.firebase:firebase-auth:17.0.0"
 
+    //Mapbox dependencies
+    implementation project(':mapbox-react-native-mapbox-gl') {
+        implementation ('com.squareup.okhttp3:okhttp:3.12.1') {
+            force = true
+        }
+    }
+
     implementation project(':react-native-gesture-handler')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
