@@ -15,4 +15,6 @@ IOS -----
 [] Mudar Orientação para portrait only
 [] Icons e splash Screen
 [] firebase
+[] react native paper
+[] react native maps
 [] Demais Testes
