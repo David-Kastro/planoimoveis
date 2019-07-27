@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import { View, Text, StyleSheet, StatusBar, Platform, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Platform, Dimensions, ScrollView, Image } from 'react-native';
 import { Card, Title, Paragraph, Caption, Button, Searchbar, IconButton, Chip, Avatar, TouchableRipple } from 'react-native-paper'
 
 import { connect } from 'react-redux';
@@ -18,6 +18,16 @@ class Main extends Component {
     currentCard: 0,
     search: "",
   }
+
+  static navigationOptions = {
+    drawerLabel: 'Mapa',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../../assets/map.png')}
+        style={[{width: 24, height: 24}, {tintColor: tintColor}]}
+      />
+    ),
+  };
 
   async componentDidMount() {
     navigator.geolocation.getCurrentPosition(
@@ -133,26 +143,44 @@ class Main extends Component {
               color="#E30613"
               size={40}
               style={{marginHorizontal: 10, width: 40}}
-              onPress={() => console.log('Pressed')}
+              onPress={() => this.props.navigation.openDrawer()}
             />
           </View>
         </View>
-
-        <View style={{position: 'absolute', top: Dimensions.get('window').height * 0.5,  right: 10}}>
+        
+        {/* bottom == scrollview height + 10 */}
+        <View style={{flexDirection: "column", position: 'absolute', bottom: 240,  right: 10}}>
           <TouchableRipple
+            style={{flex: 1, marginVertical: 5}}
+            onPress={() => this.goToCurrentLocation()}
+            rippleColor="rgba(0, 0, 0, .32)"
+          >
+            <Avatar.Icon 
+              size={50} 
+              icon="gps-fixed" 
+              color='#E30613'
+              theme={{
+                colors:{
+                  primary: 'white',
+                }
+              }} /> 
+          </TouchableRipple>
+
+          <TouchableRipple
+            style={{flex: 1, marginVertical: 5}}
             onPress={() => this.goToCurrentLocation()}
             rippleColor="rgba(0, 0, 0, .32)"
           >
             <Avatar.Icon 
             size={50} 
-            icon="gps-fixed" 
-            color='#E30613'
+            icon="tune" 
+            color='white'
             theme={{
               colors:{
-                primary: 'white',
+                primary: '#E30613',
               }
             }} /> 
-          </TouchableRipple> 
+          </TouchableRipple>
         </View>
 
         <ScrollView
