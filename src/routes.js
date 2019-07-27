@@ -23,7 +23,7 @@ const Routes    = createAppContainer(createSwitchNavigator({
 
     AppStack,
 },{
-    initialRouteName: 'Loading',
+    initialRouteName: 'AppStack',
 }));
 
 export default Routes;
