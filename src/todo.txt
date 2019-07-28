@@ -13,7 +13,7 @@ se nao renderizar componentes para navegação ( topbar, header... ) usar o Safe
 Para apresentar!!! -------- URGENTE --------
 
 [X] botao de filtrar
-[!] side bar
+[X] side bar
 [!] preços no mapa
 [!] higlight dos preços ao navegar pelos cards
 [] esconder cards para baixo

@@ -24,7 +24,6 @@ const CustomDrawerComponent = (props) => (
 
               <Button
                 mode='contained'
-                style={{marginTop: 20}}
                 uppercase={false}
                 theme={{
                     colors:{
