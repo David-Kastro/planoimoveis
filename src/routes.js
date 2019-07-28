@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import { createAppContainer, createStackNavigator, createSwitchNavigator, createDrawerNavigator, SafeAreaView, DrawerItems } from 'react-navigation';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Image } from 'react-native';
 import { Avatar, Button, Text } from 'react-native-paper'
 
 import Loading from '~/pages/Loading';
@@ -12,27 +12,7 @@ const CustomDrawerComponent = (props) => (
     
     <SafeAreaView>
         <View style={{width: '100%', height: 230, backgroundColor: '#E30613', flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
-            <Avatar.Icon 
-              size={100} 
-              icon="person"
-              color='#737373'
-              theme={{
-                colors:{
-                  primary: 'white',
-                }
-              }} />
-
-              <Button
-                mode='contained'
-                uppercase={false}
-                theme={{
-                    colors:{
-                        primary: 'white',
-                    }
-                }}
-              >
-                  <Text style={{color:'#E30613', fontWeight: '500'}}>Fazer Login</Text>
-              </Button>
+            <Image source={require('../../assets/Planologo.png')} resizeMode="contain" />
         </View>
         <ScrollView style={{marginVertical: 20}}>
             <DrawerItems {...props} />
