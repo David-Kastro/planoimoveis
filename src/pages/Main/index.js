@@ -1,15 +1,65 @@
 import React, {Component} from 'react';
 
 import { View, Text, StyleSheet, StatusBar, Platform, Dimensions, ScrollView, Image } from 'react-native';
-import { Card, Title, Paragraph, Caption, Button, Searchbar, IconButton, Chip, Avatar, TouchableRipple } from 'react-native-paper'
+import { Card, Title, Paragraph, Caption, Button, Searchbar, IconButton, Chip, Avatar, TouchableRipple } from 'react-native-paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as AuthActions } from "../../store/ducks/Authentication";
+import { Creators as PropertiesActions } from "../../store/ducks/Properties";
+
+import Properties from './properties';
 
 import MapboxGL from '@mapbox/react-native-mapbox-gl';
 
 MapboxGL.setAccessToken('pk.eyJ1IjoiZGF2aWRrYXMiLCJhIjoiY2p5ZzNrOXBhMWlxcDNscW91bnYzaGhqMiJ9.Jafi9wsh04DbaaIYjFSrVQ');
+
+const imoveis = [
+  {
+    id: 1,
+    title: 'SQN 115 Bloco J',
+    image: require('../../assets/img1.jpg'),
+    price: 'R$ 4.800',
+    size: '65m²',
+    dorms: '2 Dorms.',
+    longitude: -48.033634050658634,
+    latitude: -15.837634192063879,
+    favorited: false,
+  },
+  {
+    id: 2,
+    title: 'Quadra 101 Lote 08 Bloco A/B',
+    image: require('../../assets/img2.jpg'),
+    price: 'R$ 5.920',
+    size: '84m²',
+    dorms: '3 Dorms.',
+    longitude: -48.038123315092264,
+    latitude: -15.838789075651658,
+    favorited: false,
+  },
+  {
+    id: 3,
+    title: 'SQN 309 Bloco K',
+    image: require('../../assets/img3.jpg'),
+    price: 'R$ 1.780',
+    size: '51m²',
+    dorms: '1 Dorms.',
+    longitude: -48.0374454693366,
+    latitude: -15.841130224199306,
+    favorited: false,
+  },
+  {
+    id: 4,
+    title: 'SCN Quadra 1 Lote 50 Bloco E',
+    image: require('../../assets/img4.jpg'),
+    price: 'R$ 8.600',
+    size: '116m²',
+    dorms: '4 Dorms.',
+    longitude: -48.036106759843506,
+    latitude: -15.83844616645192,
+    favorited: false,
+  },
+]
 
 class Main extends Component {
 
@@ -30,12 +80,15 @@ class Main extends Component {
   };
 
   async componentDidMount() {
+
+    await this.props.SetProperties(imoveis)
+    setTimeout(() => this.selectProperty(0), 1000)
+
     navigator.geolocation.getCurrentPosition(
       ({coords: {latitude, longitude}}) => {
         this.setState({
           currentPosition: [longitude, latitude],
         })
-        console.log( this.state.currentPosition );
       },
       (err) => {console.log( err )},
       {
@@ -56,13 +109,16 @@ class Main extends Component {
 
     if( this.state.currentPosition ) {
 
+      await this.map.zoomTo(15, 300)
       this.map.flyTo(this.state.currentPosition)
 
     } else {
       navigator.geolocation.getCurrentPosition(
-        ({coords: {latitude, longitude}}) => {
+        async ({coords: {latitude, longitude}}) => {
   
           const location = [longitude, latitude]
+
+          await this.map.zoomTo(15, 300)
           this.map.flyTo(location)
   
         },
@@ -103,17 +159,22 @@ class Main extends Component {
     )
   }
 
-  async updateCard( offsetX ) {
-    
-    await this.setState({
-      currentCard: Math.round(offsetX / 260)
-    })
+  selectPropertyByOffset( offsetX ) {
+    const propertyIndex = Math.round(offsetX / 260);
+    this.selectProperty(propertyIndex);
+  }
 
-    console.log( this.state.currentCard );
+  async selectProperty(index) {
+    const { properties } = this.props
+    const {id, longitude, latitude} = properties.properties[index];
+
+    this.props.SelectProperty(id)
+    await this.map.zoomTo(16, 300)
+    this.map.flyTo([longitude, latitude], 1000);
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, properties } = this.props;
 
     return (
       <>
@@ -122,9 +183,11 @@ class Main extends Component {
         <MapboxGL.MapView
           ref={(map) => this.map = map}
           centerCoordinate={[ -48.0357447, -15.8398551 ]}
+          zoomLevel={15}
           style={styles.container}
           showUserLocation
         >
+          <Properties />
         </MapboxGL.MapView>
 
         <View style={{flex: 1, alignItems: 'center', flexDirection:'row', justifyContent: "space-around", position: 'absolute', top: 40, width: Dimensions.get('window').width}}>
@@ -192,147 +255,45 @@ class Main extends Component {
           snapToInterval={250} //your element width + margin
           snapToAlignment={"center"}
           contentContainerStyle={{paddingHorizontal: Dimensions.get('window').width * 0.5 - 125}}
-          onMomentumScrollEnd={ (event) => this.updateCard(event.nativeEvent.contentOffset.x) }
+          onMomentumScrollEnd={ (event) => this.selectPropertyByOffset(event.nativeEvent.contentOffset.x) }
           style={{position:'absolute', bottom: 0}}
         >
-          <Card style={{width: 240, height: 230, marginHorizontal:5}}>
-            <Card.Cover style={{height: 150}} source={require('../../assets/img1.jpg')} />
-            <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
-            </View>
-            <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <IconButton
-                icon="favorite"
-                color="rgba(255, 255, 255, 0.8)"
-                size={40}
-                style={{marginHorizontal: 10, width: 40}}
-                onPress={() => console.log('Pressed')}
-              />
-            </View>
-            <Card.Content>
-              <View style={{flex: 1, alignItems: "center"}}>
-                <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
-                  <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: R$ 4.800</Text>
-                </Card>
+          { properties.properties.map( property => (
+            <Card key={property.id} style={{width: 240, height: 230, marginHorizontal:5}}>
+              
+              <Card.Cover style={{height: 150}} source={property.image} />
+              <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
+                <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
               </View>
-              <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
-                {this.ellipsisText('SQN 115 Bloco J', 30)}
-              </Paragraph>
-              <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
-                <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  65m²
-                </Chip>
-                <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  2 Dorms.
-                </Chip>
+              <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <IconButton
+                  icon="favorite"
+                  color="rgba(255, 255, 255, 0.8)"
+                  size={40}
+                  style={{marginHorizontal: 10, width: 40}}
+                  onPress={() => console.log('Pressed')}
+                />
               </View>
-            </Card.Content>
-          </Card>  
-
-
-          <Card style={{width: 240, height: 230, marginHorizontal:5}}>
-            <Card.Cover style={{height: 150}} source={require('../../assets/img2.jpg')} />
-            <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
-            </View>
-            <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <IconButton
-                icon="favorite"
-                color="rgba(255, 255, 255, 0.8)"
-                size={40}
-                style={{marginHorizontal: 10, width: 40}}
-                onPress={() => console.log('Pressed')}
-              />
-            </View>
-            <Card.Content>
-              <View style={{flex: 1, alignItems: "center"}}>
-                <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
-                  <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: R$ 5.920</Text>
-                </Card>
-              </View>
-              <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
-                {this.ellipsisText('Quadra 101 Lote 08 Bloco A/B', 30)}
-              </Paragraph>
-              <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
-                <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  84m²
-                </Chip>
-                <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  3 Dorms.
-                </Chip>
-              </View>
-            </Card.Content>
-          </Card>
-
-
-          <Card style={{width: 240, height: 230, marginHorizontal:5}}>
-            <Card.Cover style={{height: 150}} source={require('../../assets/img3.jpg')} />
-            <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
-            </View>
-            <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <IconButton
-                icon="favorite"
-                color="rgba(255, 255, 255, 0.8)"
-                size={40}
-                style={{marginHorizontal: 10, width: 40}}
-                onPress={() => console.log('Pressed')}
-              />
-            </View>
-            <Card.Content>
-              <View style={{flex: 1, alignItems: "center"}}>
-                <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
-                  <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: R$ 1.780</Text>
-                </Card>
-              </View>
-              <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
-                {this.ellipsisText('SQN 309 Bloco K', 30)}
-              </Paragraph>
-              <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
-                <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  51m²
-                </Chip>
-                <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  1 Dorms.
-                </Chip>
-              </View>
-            </Card.Content>
-          </Card> 
-
-          <Card style={{width: 240, height: 230, marginHorizontal:5}}>
-            <Card.Cover style={{height: 150}} source={require('../../assets/img4.jpg')} />
-            <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
-              <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
-            </View>
-            <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <IconButton
-                icon="favorite"
-                color="rgba(255, 255, 255, 0.8)"
-                size={40}
-                style={{marginHorizontal: 10, width: 40}}
-                onPress={() => console.log('Pressed')}
-              />
-            </View>
-            <Card.Content>
-              <View style={{flex: 1, alignItems: "center"}}>
-                <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
-                  <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: R$ 8.600</Text>
-                </Card>
-              </View>
-              <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
-                {this.ellipsisText('SCN Quadra 1 Lote 50 Bloco E', 30)}
-              </Paragraph>
-              <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
-                <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  116m²
-                </Chip>
-                <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                  4 Dorms.
-                </Chip>
-              </View>
-            </Card.Content>
-          </Card>
-
+              <Card.Content>
+                <View style={{flex: 1, alignItems: "center"}}>
+                  <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
+                    <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: { property.price }</Text>
+                  </Card>
+                </View>
+                <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
+                  {this.ellipsisText( property.title, 30)}
+                </Paragraph>
+                <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
+                  <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
+                    { property.size }
+                  </Chip>
+                  <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
+                    { property.dorms }
+                  </Chip>
+                </View>
+              </Card.Content>
+            </Card>
+          )) }
 
         </ScrollView>
       </>
@@ -363,10 +324,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  auth: state.authReducers
+  auth: state.authReducers,
+  properties: state.propertiesReducers
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({...AuthActions, ...PropertiesActions}, dispatch);
 
 export default connect(
   mapStateToProps,

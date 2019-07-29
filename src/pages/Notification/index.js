@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as AuthActions } from "../../store/ducks/Authentication";
 
-class Notificacao extends Component {
+class Notification extends Component {
 
   static navigationOptions = {
     drawerLabel: 'Notificações',
@@ -26,7 +26,7 @@ class Notificacao extends Component {
     const { auth } = this.props;
 
     return (
-        <Text>Notificacao</Text>
+        <Text>Notification</Text>
     )
   }
 };
@@ -40,5 +40,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch)
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Notificacao);
+)(Notification);
 

@@ -7,8 +7,8 @@ import { Avatar, Button, Text, TouchableRipple } from 'react-native-paper'
 import Loading from '~/pages/Loading';
 import Main from '~/pages/Main';
 import SignIn from '~/pages/SignIn';
-import Agenda from '~/pages/Agenda';
-import Notificacao from '~/pages/Notificacao';
+import Schedule from '~/pages/Schedule';
+import Notification from '~/pages/Notification';
 
 const CustomDrawerComponent = (props) => (
     
@@ -29,7 +29,7 @@ const CustomDrawerComponent = (props) => (
                     onPress={() => console.log('Pressed')}
                     rippleColor="rgba(0, 0, 0, .32)"
                 >
-                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 20}}>Notificações</Text>
+                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 20}}>Configurações</Text>
                 </TouchableRipple>
             </View>
         </View>
@@ -44,12 +44,12 @@ const DrawerStack = createDrawerNavigator({
         screen: Main
     },
 
-    Agenda: {
-        screen: Agenda
+    Schedule: {
+        screen: Schedule
     },
 
-    Notificacao: {
-        screen: Notificacao
+    Notification: {
+        screen: Notification
     },
 
 },{
@@ -81,5 +81,16 @@ const Routes    = createAppContainer(createSwitchNavigator({
 },{
     initialRouteName: 'AppStack',
 }));
+
+/*-------------- Temporário -----------------------*/
+const defaultGetStateForAction = Routes.router.getStateForAction;
+Routes.router.getStateForAction = (action, state) => {
+    const {type} = action;
+    if( type == 'Navigation/NAVIGATE' ) {
+        return null
+    }
+    return defaultGetStateForAction(action, state);
+}
+/*-------------------------------------------------*/
 
 export default Routes;

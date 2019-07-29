@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as AuthActions } from "../../store/ducks/Authentication";
 
-class Agenda extends Component {
+class Schedule extends Component {
 
   static navigationOptions = {
     drawerLabel: 'Seus Agendamentos',
@@ -22,7 +22,7 @@ class Agenda extends Component {
     const { auth } = this.props;
 
     return (
-        <Text>Agenda</Text>
+        <Text>Schedule</Text>
     )
   }
 };
@@ -36,5 +36,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch)
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Agenda);
+)(Schedule);
 
