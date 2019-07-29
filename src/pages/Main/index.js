@@ -20,11 +20,11 @@ class Main extends Component {
   }
 
   static navigationOptions = {
-    drawerLabel: 'Mapa',
+    drawerLabel: 'Procurar Imóveis',
     drawerIcon: ({ tintColor }) => (
       <Image
         source={require('../../assets/map.png')}
-        style={[{width: 24, height: 24}, {tintColor: tintColor}]}
+        style={[{width: 30, height: 30}, {tintColor: tintColor}]}
       />
     ),
   };
@@ -139,7 +139,7 @@ class Main extends Component {
           />
           <View>
             <IconButton
-              icon="apps"
+              icon="menu"
               color="#E30613"
               size={40}
               style={{marginHorizontal: 10, width: 40}}
