@@ -13,7 +13,7 @@ import Notification from '~/pages/Notification';
 const CustomDrawerComponent = (props) => (
     
     <SafeAreaView>
-        <View style={{width: '100%', height: 230, backgroundColor: '#E30613'}}>
+        <View style={{width: '100%', height: 220, backgroundColor: '#E30613'}}>
             <View style={{width: '100%', height: 140, flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
                 <Image source={require('./assets/Planologo.png')} resizeMode="contain" style={{height: 75, marginTop: 20}} />
             </View>
@@ -23,13 +23,13 @@ const CustomDrawerComponent = (props) => (
                     onPress={() => console.log(props)}
                     rippleColor="rgba(0, 0, 0, .32)"
                 >
-                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 20}}>Fazer Login</Text>
+                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 18}}>Fazer Login</Text>
                 </TouchableRipple>
                 <TouchableRipple
                     onPress={() => console.log('Pressed')}
                     rippleColor="rgba(0, 0, 0, .32)"
                 >
-                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 20}}>Configurações</Text>
+                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 18}}>Configurações</Text>
                 </TouchableRipple>
             </View>
         </View>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import { View, Text, StyleSheet, StatusBar, Platform, Dimensions, ScrollView, Image } from 'react-native';
 import { Card, Title, Paragraph, Caption, Button, Searchbar, IconButton, Chip, Avatar, TouchableRipple } from 'react-native-paper';
+import debounce from 'lodash/debounce';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -63,10 +64,17 @@ const imoveis = [
 
 class Main extends Component {
 
-  state = {
-    currentPosition: null,
-    currentCard: 0,
-    search: "",
+  constructor(props) {
+    super(props);
+    
+    this.goToCurrentLocation = debounce( this.goToCurrentLocation, 500 );
+    this.selectProperty      = debounce( this.selectProperty, 800 );
+
+    this.state = {
+      currentPosition: null,
+      currentCard: 0,
+      search: "",
+    }
   }
 
   static navigationOptions = {
@@ -109,8 +117,8 @@ class Main extends Component {
 
     if( this.state.currentPosition ) {
 
-      await this.map.zoomTo(15, 300)
-      this.map.flyTo(this.state.currentPosition)
+      await this.map.flyTo(this.state.currentPosition)
+      this.map.zoomTo(15, 500)
 
     } else {
       navigator.geolocation.getCurrentPosition(
@@ -118,8 +126,8 @@ class Main extends Component {
   
           const location = [longitude, latitude]
 
-          await this.map.zoomTo(15, 300)
-          this.map.flyTo(location)
+          await this.map.flyTo(location, 800)
+          this.map.zoomTo(15, 500)
   
         },
         (err) => {console.log( err )},
@@ -169,8 +177,17 @@ class Main extends Component {
     const {id, longitude, latitude} = properties.properties[index];
 
     this.props.SelectProperty(id)
-    await this.map.zoomTo(16, 300)
-    this.map.flyTo([longitude, latitude], 1000);
+    await this.map.flyTo([longitude, latitude], 800);
+    this.map.zoomTo(16, 500)
+  }
+
+  toggleFavorite(id) {
+    const { properties } = this.props;
+    const property = properties.properties.filter( property => property.id == id )[0]
+    
+    property.favorited  && this.props.UnfavoriteProperty( id );
+    !property.favorited && this.props.FavoriteProperty( id );
+
   }
 
   render() {
@@ -268,10 +285,10 @@ class Main extends Component {
               <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
                 <IconButton
                   icon="favorite"
-                  color="rgba(255, 255, 255, 0.8)"
+                  color={property.favorited ? 'red': "rgba(255, 255, 255, 0.8)"}
                   size={40}
                   style={{marginHorizontal: 10, width: 40}}
-                  onPress={() => console.log('Pressed')}
+                  onPress={() => this.toggleFavorite(property.id)}
                 />
               </View>
               <Card.Content>

@@ -13,7 +13,6 @@ class Properties extends Component{
 
   render() {
     const { properties } = this.props;
-    console.log( properties.properties )
 
     return (
       <>

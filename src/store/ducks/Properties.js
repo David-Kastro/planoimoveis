@@ -21,14 +21,14 @@ const SelectProperty = ( state = INITIAL_STATE, action ) => {
 const FavoriteProperty = ( state = INITIAL_STATE, action ) => {
     return { 
       ...state,
-      properties: state.properties.map( property => property.id == action.id && {...property, favorited: true})  
+      properties: state.properties.map( property => property.id == action.id ? {...property, favorited: true} : {...property})
     }
 }
 
 const UnfavoriteProperty = ( state = INITIAL_STATE, action ) => {
     return { 
       ...state,
-      properties: state.properties.map( property => property.id == action.id && {...property, favorited: false})  
+      properties: state.properties.map( property => property.id == action.id ? {...property, favorited: false} : {...property})  
     }
 }
 
