@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "87601122667-jp99bojidqdpai5kb2hnr1d225cc49a1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planoimoveis",
+            "certificate_hash": "63fc77e94c526c0a643e61ec0b4d39ec66eed477"
+          }
+        },
+        {
           "client_id": "87601122667-7cmjahv3c3do3orgij7l7fm0iiiijuk1.apps.googleusercontent.com",
           "client_type": 3
         }

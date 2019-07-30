@@ -9,9 +9,33 @@ import Main from '~/pages/Main';
 import SignIn from '~/pages/SignIn';
 import Schedule from '~/pages/Schedule';
 import Notification from '~/pages/Notification';
+import Credit from '~/pages/Credit';
 
-const CustomDrawerComponent = (props) => (
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as AuthActions } from "./store/ducks/Authentication";
+
+import firebase from 'react-native-firebase';
+
+const signOut = async (props) => {
     
+    const { auth }            = props;
+
+    props.SignoutLoading( auth.loading );
+
+    try {
+
+        await firebase.auth().signOut();
+
+    } catch(err) {
+
+        props.SignoutError(err);
+
+    }   
+}
+
+const CustomComponent = (props) => (
+
     <SafeAreaView>
         <View style={{width: '100%', height: 220, backgroundColor: '#E30613'}}>
             <View style={{width: '100%', height: 140, flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
@@ -20,10 +44,10 @@ const CustomDrawerComponent = (props) => (
 
             <View style={{width: '100%', flexDirection: 'column', justifyContent: 'center'}}>
                 <TouchableRipple
-                    onPress={() => console.log(props)}
+                    onPress={() => signOut(props)}
                     rippleColor="rgba(0, 0, 0, .32)"
                 >
-                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 18}}>Fazer Login</Text>
+                    <Text style={{marginVertical: 5, marginHorizontal: 10, color: 'rgba(255,255,255,0.9)', fontSize: 18}}>Sair</Text>
                 </TouchableRipple>
                 <TouchableRipple
                     onPress={() => console.log('Pressed')}
@@ -39,6 +63,17 @@ const CustomDrawerComponent = (props) => (
     </SafeAreaView>
 )
 
+const mapStateToProps    = state => ({
+    auth: state.authReducers
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch);
+
+CustomDrawerComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomComponent);
+
 const DrawerStack = createDrawerNavigator({
     Main: {
         screen: Main
@@ -50,6 +85,10 @@ const DrawerStack = createDrawerNavigator({
 
     Notification: {
         screen: Notification
+    },
+
+    Credit: {
+        screen: Credit
     },
 
 },{
@@ -79,14 +118,15 @@ const Routes    = createAppContainer(createSwitchNavigator({
 
     AppStack,
 },{
-    initialRouteName: 'AppStack',
+    initialRouteName: 'Loading',
 }));
 
 /*-------------- Temporário -----------------------*/
 const defaultGetStateForAction = Routes.router.getStateForAction;
 Routes.router.getStateForAction = (action, state) => {
-    const {type} = action;
-    if( type == 'Navigation/NAVIGATE' ) {
+    const {type, routeName} = action;
+    
+    if( type == 'Navigation/NAVIGATE' && (routeName != 'Main' && routeName != 'SignIn') ) {
         return null
     }
     return defaultGetStateForAction(action, state);

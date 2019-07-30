@@ -6,6 +6,7 @@ export const { Types, Creators } = createActions({
   UnfavoriteProperty : ["id"],
   LoadingProperties  : [],
   SetProperties      : ["properties"],
+  UnsetProperties    : [],
 
 })
 
@@ -49,10 +50,19 @@ const SetProperties = ( state = INITIAL_STATE, action ) => {
     }
 }
 
+const UnsetProperties = ( state = INITIAL_STATE, action ) => {
+  
+  return { 
+    ...state,
+    properties: [], 
+  }
+}
+
 export default createReducer( INITIAL_STATE, {
   [Types.SELECT_PROPERTY]     : SelectProperty,    
   [Types.FAVORITE_PROPERTY]   : FavoriteProperty,  
   [Types.UNFAVORITE_PROPERTY] : UnfavoriteProperty,
   [Types.LOADING_PROPERTIES]  : LoadingProperties, 
-  [Types.SET_PROPERTIES]      : SetProperties
+  [Types.SET_PROPERTIES]      : SetProperties,
+  [Types.UNSET_PROPERTIES]    : UnsetProperties
 })

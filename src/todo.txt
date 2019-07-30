@@ -31,4 +31,10 @@ IOS -----
 [] firebase
 [] get current position
 [] maps
+[] firebase ui
+[] production keys
 [] Demais Testes
+
+imob ------
+[] Re-Implementar firebase ui com outras credenciais e chaves.
+[] Re-Implementar mapa com outras chaves.
