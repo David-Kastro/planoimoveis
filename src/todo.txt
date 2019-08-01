@@ -14,8 +14,9 @@ Para apresentar!!! -------- URGENTE --------
 
 [X] botao de filtrar
 [X] side bar
-[!] preços no mapa
-[!] higlight dos preços ao navegar pelos cards
+[X] preços no mapa
+[X] higlight dos preços ao navegar pelos cards
+[] Trocar "React-Native-Paper" por "Native Base"!!!!! **URGENTE**
 [] esconder cards para baixo
 [] favoritar
 [] abrir tela do imovel (clicando ou arrastando para o centro)
