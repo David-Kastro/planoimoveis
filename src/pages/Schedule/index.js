@@ -13,7 +13,7 @@ class Schedule extends Component {
     drawerIcon: ({ tintColor }) => (
       <Image
         source={require('../../assets/event.png')}
-        style={[{width: 30, height: 30}, {tintColor: tintColor}]}
+        style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     ),
   };

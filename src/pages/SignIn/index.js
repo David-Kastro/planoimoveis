@@ -11,8 +11,6 @@ import {
   Image
 } from 'react-native';
 
-import { TouchableRipple } from 'react-native-paper';
-
 import {
   Container,
   ArrowBack,

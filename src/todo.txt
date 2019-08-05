@@ -16,11 +16,12 @@ Para apresentar!!! -------- URGENTE --------
 [X] side bar
 [X] preços no mapa
 [X] higlight dos preços ao navegar pelos cards
-[] Trocar "React-Native-Paper" por "Native Base"!!!!! **URGENTE**
+[] Resolver botoes sem Ripple
 [] esconder cards para baixo
-[] favoritar
+[X] favoritar
 [] abrir tela do imovel (clicando ou arrastando para o centro)
 [] tela do imovel
+[] Loading cards com fade
 [] reload do cards ao mudar a posiçao do mapa
 [] mostrar apenas cards com preços no mapa
 [] limitar numero de cards, e botao de 'ver mais' ao final caso houver mais imoveis para serem mostrados

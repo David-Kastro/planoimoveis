@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 import { createAppContainer, createStackNavigator, createSwitchNavigator, createDrawerNavigator, SafeAreaView, DrawerItems } from 'react-navigation';
-import { ScrollView, View, Image } from 'react-native';
+import { Transition, createFluidNavigator } from 'react-navigation-fluid-transitions';
+import { ScrollView, View, Image, ImageBackground } from 'react-native';
 import { Avatar, Button, Text, TouchableRipple } from 'react-native-paper'
 
 import Loading from '~/pages/Loading';
@@ -10,6 +11,7 @@ import SignIn from '~/pages/SignIn';
 import Schedule from '~/pages/Schedule';
 import Notification from '~/pages/Notification';
 import Credit from '~/pages/Credit';
+import Property from '~/pages/Property';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -37,7 +39,12 @@ const signOut = async (props) => {
 const CustomComponent = (props) => (
 
     <SafeAreaView>
-        <View style={{width: '100%', height: 220, backgroundColor: '#E30613'}}>
+        <Image
+            source={require('./assets/city.jpg')}
+            style={{flex: 1, width: '100%', height: 220, position: 'absolute'}}
+            resizeMode="cover"
+        />
+        <View style={{width: '100%', height: 220, backgroundColor: 'rgba(227, 6, 19, 0.6)'}}>
             <View style={{width: '100%', height: 140, flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
                 <Image source={require('./assets/Planologo.png')} resizeMode="contain" style={{height: 75, marginTop: 20}} />
             </View>
@@ -75,6 +82,7 @@ CustomDrawerComponent = connect(
 )(CustomComponent);
 
 const DrawerStack = createDrawerNavigator({
+
     Main: {
         screen: Main
     },
@@ -92,18 +100,32 @@ const DrawerStack = createDrawerNavigator({
     },
 
 },{
+    initialRouteName: 'Main',
     contentOptions: {
         activeTintColor: '#E30613',
-        labelStyle: {fontSize: 20, fontWeight: 'normal'}
+        labelStyle: {fontSize: 18, fontWeight: 'normal'}
     },
     drawerPosition: "right",
     contentComponent: CustomDrawerComponent
 });
 
-const AppStack  = createStackNavigator({ 
-    DrawerStack
+const FluidStack = createFluidNavigator({
+    DrawerStack,
+    Property: {
+        screen: Property
+    }
 },{
     initialRouteName: 'DrawerStack',
+    transitionConfig: {
+        duration: 500,
+        useNativeDriver: true
+    }
+})
+
+const AppStack  = createStackNavigator({ 
+    FluidStack,
+},{
+    initialRouteName: 'FluidStack',
     headerMode: 'none',
 });
 
@@ -125,8 +147,14 @@ const Routes    = createAppContainer(createSwitchNavigator({
 const defaultGetStateForAction = Routes.router.getStateForAction;
 Routes.router.getStateForAction = (action, state) => {
     const {type, routeName} = action;
+
+    unblockedScreens = [
+        'Main',
+        'SignIn',
+        'Property'
+    ]
     
-    if( type == 'Navigation/NAVIGATE' && (routeName != 'Main' && routeName != 'SignIn') ) {
+    if( type == 'Navigation/NAVIGATE' && !unblockedScreens.includes(routeName) ) {
         return null
     }
     return defaultGetStateForAction(action, state);

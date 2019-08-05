@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 
 import { View, Text, StyleSheet, StatusBar, Platform, Dimensions, ScrollView, Image } from 'react-native';
 import { Card, Title, Paragraph, Caption, Button, Searchbar, IconButton, Chip, Avatar, TouchableRipple } from 'react-native-paper';
+import Ripple from 'react-native-material-ripple';
 import debounce from 'lodash/debounce';
+
+import { Transition } from 'react-navigation-fluid-transitions';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -82,7 +85,7 @@ class Main extends Component {
     drawerIcon: ({ tintColor }) => (
       <Image
         source={require('../../assets/map.png')}
-        style={[{width: 30, height: 30}, {tintColor: tintColor}]}
+        style={[{width: 26, height: 26}, {tintColor: tintColor}]}
       />
     ),
   };
@@ -230,10 +233,10 @@ class Main extends Component {
         
         {/* bottom == scrollview height + 10 */}
         <View style={{flexDirection: "column", position: 'absolute', bottom: 240,  right: 10}}>
-          <TouchableRipple
+          <Ripple
             style={{flex: 1, marginVertical: 5}}
             onPress={() => this.goToCurrentLocation()}
-            rippleColor="rgba(0, 0, 0, .32)"
+            rippleColor="#000"
           >
             <Avatar.Icon 
               size={50} 
@@ -244,12 +247,12 @@ class Main extends Component {
                   primary: 'white',
                 }
               }} /> 
-          </TouchableRipple>
+          </Ripple>
 
-          <TouchableRipple
+          <Ripple
             style={{flex: 1, marginVertical: 5}}
             onPress={() => this.goToCurrentLocation()}
-            rippleColor="rgba(0, 0, 0, .32)"
+            rippleColor="#000"
           >
             <Avatar.Icon 
             size={50} 
@@ -260,7 +263,7 @@ class Main extends Component {
                 primary: '#E30613',
               }
             }} /> 
-          </TouchableRipple>
+          </Ripple>
         </View>
 
         <ScrollView
@@ -276,40 +279,51 @@ class Main extends Component {
           style={{position:'absolute', bottom: 0}}
         >
           { properties.properties.map( property => (
-            <Card key={property.id} style={{width: 240, height: 230, marginHorizontal:5}}>
-              
-              <Card.Cover style={{height: 150}} source={property.image} />
-              <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
-                <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
-              </View>
-              <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <IconButton
-                  icon="favorite"
-                  color={property.favorited ? 'red': "rgba(255, 255, 255, 0.8)"}
-                  size={40}
-                  style={{marginHorizontal: 10, width: 40}}
-                  onPress={() => this.toggleFavorite(property.id)}
-                />
-              </View>
-              <Card.Content>
-                <View style={{flex: 1, alignItems: "center"}}>
-                  <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
-                    <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: { property.price }</Text>
-                  </Card>
-                </View>
-                <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
-                  {this.ellipsisText( property.title, 30)}
-                </Paragraph>
-                <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
-                  <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                    { property.size }
-                  </Chip>
-                  <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
-                    { property.dorms }
-                  </Chip>
-                </View>
-              </Card.Content>
-            </Card>
+      
+              <Card key={property.id} style={{width: 240, height: 230, marginHorizontal:5}}>
+                <Ripple 
+                  rippleColor="#fff" 
+                  rippleOpacity={1} 
+                  rippleDuration={1000}
+                  onPress={() => this.props.navigation.navigate('Property')}
+                >
+                  <Transition shared={`property_${property.id}`}>
+                    <Card.Cover style={{height: 150}} source={property.image} />
+                  </Transition>
+
+                  <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    <Card><Text style={{paddingHorizontal: 8, marginVertical: 3, fontWeight: '500'}}>Anúncio Novo</Text></Card>
+                  </View>
+                  <View style={{width: 240, position: 'absolute', top: 10, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <IconButton
+                      icon="favorite"
+                      color={property.favorited ? 'red': "rgba(255, 255, 255, 0.8)"}
+                      size={40}
+                      style={{marginHorizontal: 10, width: 40}}
+                      onPress={() => this.toggleFavorite(property.id)}
+                    />
+                  </View>
+                  <Card.Content>
+                    <View style={{flex: 1, alignItems: "center"}}>
+                      <Card style={{alignItems: 'center', marginTop: -10, height: 20}}>
+                        <Text style={{paddingHorizontal: 10, color: "#22b536", fontWeight: '500'}}>Aluguel: { property.price }</Text>
+                      </Card>
+                    </View>
+                    <Paragraph style={{fontWeight: 'bold', marginTop: 15, color: '#707070'}}>
+                      {this.ellipsisText( property.title, 30)}
+                    </Paragraph>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10}}>
+                      <Chip icon="straighten" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
+                        { property.size }
+                      </Chip>
+                      <Chip icon="hotel" selectedColor='#787878' style={{backgroundColor: 'transparent', flex: 1}}>
+                        { property.dorms }
+                      </Chip>
+                    </View>
+                  </Card.Content>
+                </Ripple>
+              </Card>
+
           )) }
 
         </ScrollView>
