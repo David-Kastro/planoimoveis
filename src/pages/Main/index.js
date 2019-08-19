@@ -212,6 +212,7 @@ class Main extends Component {
 
         <View style={{flex: 1, alignItems: 'center', flexDirection:'row', justifyContent: "space-around", position: 'absolute', top: 40, width: Dimensions.get('window').width}}>
           <Searchbar
+            elevation={0}
             placeholder="Buscar Local..."
             onChangeText={ input => { this.setState({ search: input }) } }
             value={this.state.search}
@@ -280,7 +281,7 @@ class Main extends Component {
         >
           { properties.properties.map( property => (
       
-              <Card key={property.id} style={{width: 240, height: 230, marginHorizontal:5}}>
+              <Card key={property.id} style={{width: 240, height: 230, marginHorizontal:5, overflow: 'hidden'}}>
                 <Ripple 
                   rippleColor="#fff" 
                   rippleOpacity={1} 
@@ -288,7 +289,7 @@ class Main extends Component {
                   onPress={() => this.props.navigation.navigate('Property')}
                 >
                   <Transition shared={`property_${property.id}`}>
-                    <Card.Cover style={{height: 150}} source={property.image} />
+                    <Card.Cover style={{height: 150, overflow: 'hidden'}} source={property.image} />
                   </Transition>
 
                   <View style={{width: 240, position: 'absolute', top: 15, left: 10, flexDirection: 'row', justifyContent: 'flex-start'}}>

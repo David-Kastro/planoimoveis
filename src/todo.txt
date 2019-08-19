@@ -36,6 +36,7 @@ IOS -----
 [] firebase ui
 [] production keys
 [] Demais Testes
+[] Camera
 
 imob ------
 [] Re-Implementar firebase ui com outras credenciais e chaves.
