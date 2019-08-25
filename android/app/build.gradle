@@ -163,6 +163,9 @@ dependencies {
         }
     }
 
+    //Linear Gradient
+    implementation project(':react-native-linear-gradient')
+
     implementation project(':react-native-gesture-handler')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])

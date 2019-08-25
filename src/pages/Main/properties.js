@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 
 import { AnnotationContainer, AnnotationText } from './styles';
+import Point from '../../components/Point';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -22,9 +23,12 @@ class Properties extends Component{
             id={ property.id.toString() }
             coordinate={[ parseFloat( property.longitude ), parseFloat( property.latitude ) ]}
           >
-            <AnnotationContainer backgroundColor={property.id === properties.selectedProperty ? '#E30613' : '#FC6663'}>
-              <AnnotationText>{ property.price }</AnnotationText>
-            </AnnotationContainer>
+            <Point 
+              backgroundColor={property.id === properties.selectedProperty ? '#E30613' : '#00cc7a'} 
+              color="white"
+              text={property.price}
+              activate={property.id === properties.selectedProperty}        
+            />
             <MapboxGL.Callout title={ property.title }/>
           </MapboxGL.PointAnnotation>
         ))}

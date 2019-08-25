@@ -15,7 +15,7 @@ class Loading extends Component {
 
             if( user ) {
                 
-                await this.props.SigninSuccess(user._user)
+                await this.props.SigninSuccess(user._user);
                 this.props.navigation.navigate('Main');
 
             } else {
@@ -38,11 +38,11 @@ class Loading extends Component {
 const mapStateToProps = state => ({
     auth: state.authReducers,
     properties: state.propertiesReducers
-  });
+});
   
-  const mapDispatchToProps = dispatch => bindActionCreators({...AuthActions, ...PropertiesActions}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({...AuthActions, ...PropertiesActions}, dispatch);
   
-  export default connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Loading);
