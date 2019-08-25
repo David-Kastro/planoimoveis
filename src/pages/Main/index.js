@@ -21,8 +21,8 @@ import MapboxGL from '@mapbox/react-native-mapbox-gl';
 
 MapboxGL.setAccessToken('pk.eyJ1IjoiZGF2aWRrYXMiLCJhIjoiY2p5ZzNrOXBhMWlxcDNscW91bnYzaGhqMiJ9.Jafi9wsh04DbaaIYjFSrVQ');
 
-const cardsWidth = 300;
-const cardsHeight = 120;
+const cardsWidth = Dimensions.get('window').width * 0.86;
+const cardsHeight = Dimensions.get('window').width * 0.35;
 const cardsSpacing = 10;
 
 const imoveis = [
@@ -182,7 +182,7 @@ class Main extends Component {
 
     this.props.SelectProperty(id)
     await this.map.flyTo([longitude, latitude], 800);
-    this.map.zoomTo(16, 500)
+    this.map.zoomTo(15, 500);
   }
 
   toggleFavorite(id) {
